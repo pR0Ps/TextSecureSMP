@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.thoughtcrime.securesms;
+package org.thoughtcrime.SMP;
 
 import android.test.suitebuilder.annotation.LargeTest;
 
@@ -24,7 +24,7 @@ import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.PreferenceMatchers.withKey;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static org.thoughtcrime.securesms.EspressoUtil.waitOn;
+import static org.thoughtcrime.SMP.EspressoUtil.waitOn;
 
 @LargeTest
 public class ApplicationPreferencesActivityTest extends TextSecureEspressoTestCase<ConversationListActivity> {

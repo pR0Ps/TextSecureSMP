@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.thoughtcrime.securesms;
+package org.thoughtcrime.SMP;
 
 import android.content.Context;
 import android.content.Intent;
@@ -22,9 +22,9 @@ import android.os.Build;
 import android.os.Build.VERSION;
 import android.util.Log;
 
-import org.thoughtcrime.securesms.service.SmsListener;
-import org.thoughtcrime.securesms.util.SmsUtil;
-import org.thoughtcrime.securesms.test.R;
+import org.thoughtcrime.SMP.service.SmsListener;
+import org.thoughtcrime.SMP.util.SmsUtil;
+import org.thoughtcrime.SMP.test.R;
 
 public class RegistrationBypassUtil {
 

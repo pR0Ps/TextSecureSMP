@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.thoughtcrime.securesms;
+package org.thoughtcrime.SMP;
 
 import android.app.Activity;
 import android.content.Context;
@@ -22,9 +22,9 @@ import android.preference.PreferenceManager;
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
 
-import org.thoughtcrime.securesms.crypto.MasterSecretUtil;
-import org.thoughtcrime.securesms.database.DatabaseFactory;
-import org.thoughtcrime.securesms.util.TextSecurePreferences;
+import org.thoughtcrime.SMP.crypto.MasterSecretUtil;
+import org.thoughtcrime.SMP.database.DatabaseFactory;
+import org.thoughtcrime.SMP.util.TextSecurePreferences;
 
 public class TextSecureEspressoTestCase<T extends Activity> extends ActivityInstrumentationTestCase2<T> {
 

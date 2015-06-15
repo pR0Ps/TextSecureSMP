@@ -1,4 +1,4 @@
-package org.thoughtcrime.securesms;
+package org.thoughtcrime.SMP;
 
 import android.test.suitebuilder.annotation.LargeTest;
 
@@ -9,8 +9,8 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.thoughtcrime.securesms.EspressoUtil.addContact;
-import static org.thoughtcrime.securesms.EspressoUtil.waitOn;
+import static org.thoughtcrime.SMP.EspressoUtil.addContact;
+import static org.thoughtcrime.SMP.EspressoUtil.waitOn;
 
 /**
  * rhodey

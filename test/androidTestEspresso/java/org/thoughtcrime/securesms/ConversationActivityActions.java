@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.thoughtcrime.securesms;
+package org.thoughtcrime.SMP;
 
 import android.content.Context;
 
@@ -24,7 +24,7 @@ import static android.support.test.espresso.Espresso.openContextualActionModeOve
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.thoughtcrime.securesms.EspressoUtil.typeTextAndCloseKeyboard;
+import static org.thoughtcrime.SMP.EspressoUtil.typeTextAndCloseKeyboard;
 
 public class ConversationActivityActions {
 

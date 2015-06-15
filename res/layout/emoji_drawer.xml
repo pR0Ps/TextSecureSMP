@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<org.thoughtcrime.securesms.components.KeyboardAwareLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<org.thoughtcrime.SMP.components.KeyboardAwareLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                                                  xmlns:app="http://schemas.android.com/apk/res-auto"
                                                                  android:id="@+id/container"
                                                                  android:orientation="vertical"
@@ -29,7 +29,7 @@
               android:layout_marginTop="10dp"
               android:layout_marginBottom="10dp" />
 
-        <org.thoughtcrime.securesms.components.RepeatableImageKey
+        <org.thoughtcrime.SMP.components.RepeatableImageKey
                 android:id="@+id/backspace"
                 android:background="?emoji_tab_strip_background"
                 android:src="@drawable/ic_backspace_grey600_24dp"
@@ -47,4 +47,4 @@
             android:layout_height="match_parent"
             android:background="?emoji_background" />
 
-</org.thoughtcrime.securesms.components.KeyboardAwareLinearLayout>
+</org.thoughtcrime.SMP.components.KeyboardAwareLinearLayout>

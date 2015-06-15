@@ -260,7 +260,7 @@ if (project.hasProperty('espresso') && System.console() != null) {
         android.productFlavors {
             base {}
             espresso {
-                testInstrumentationRunner "org.thoughtcrime.securesms.TextSecureWakingTestRunner"
+                testInstrumentationRunner "org.thoughtcrime.org.thoughtcrime.securesms.SMP.TextSecureWakingTestRunner"
             }
         }
         android.sourceSets.espresso {

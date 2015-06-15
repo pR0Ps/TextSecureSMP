@@ -14,21 +14,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.thoughtcrime.securesms.preferences;
+package org.thoughtcrime.SMP.preferences;
 
 import android.test.suitebuilder.annotation.LargeTest;
 
 import org.hamcrest.Matchers;
-import org.thoughtcrime.securesms.ApplicationPreferencesActivity;
-import org.thoughtcrime.securesms.ConversationListActivity;
-import org.thoughtcrime.securesms.LogSubmitActivity;
-import org.thoughtcrime.securesms.R;
-import org.thoughtcrime.securesms.RegistrationActivity;
-import org.thoughtcrime.securesms.contacts.ContactIdentityManager;
-import org.thoughtcrime.securesms.ApplicationPreferencesActivityActions;
-import org.thoughtcrime.securesms.ConversationListActivityActions;
-import org.thoughtcrime.securesms.TextSecureEspressoTestCase;
-import org.thoughtcrime.securesms.util.TextSecurePreferences;
+import org.thoughtcrime.SMP.ApplicationPreferencesActivity;
+import org.thoughtcrime.SMP.ConversationListActivity;
+import org.thoughtcrime.SMP.LogSubmitActivity;
+import org.thoughtcrime.SMP.R;
+import org.thoughtcrime.SMP.RegistrationActivity;
+import org.thoughtcrime.SMP.contacts.ContactIdentityManager;
+import org.thoughtcrime.SMP.ApplicationPreferencesActivityActions;
+import org.thoughtcrime.SMP.ConversationListActivityActions;
+import org.thoughtcrime.SMP.TextSecureEspressoTestCase;
+import org.thoughtcrime.SMP.util.TextSecurePreferences;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
@@ -39,7 +39,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isChecked;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isNotChecked;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.thoughtcrime.securesms.EspressoUtil.waitOn;
+import static org.thoughtcrime.SMP.EspressoUtil.waitOn;
 
 @LargeTest
 public class AdvancedPreferenceFragmentTest extends TextSecureEspressoTestCase<ConversationListActivity> {

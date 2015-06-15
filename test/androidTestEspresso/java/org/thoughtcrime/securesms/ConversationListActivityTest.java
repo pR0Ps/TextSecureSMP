@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.thoughtcrime.securesms;
+package org.thoughtcrime.SMP;
 
 import android.test.suitebuilder.annotation.LargeTest;
 import android.util.Log;
@@ -23,11 +23,11 @@ import android.widget.TextView;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
-import org.thoughtcrime.securesms.components.DefaultSmsReminder;
-import org.thoughtcrime.securesms.components.ExpiredBuildReminder;
-import org.thoughtcrime.securesms.components.PushRegistrationReminder;
-import org.thoughtcrime.securesms.components.SystemSmsImportReminder;
-import org.thoughtcrime.securesms.util.TextSecurePreferences;
+import org.thoughtcrime.SMP.components.DefaultSmsReminder;
+import org.thoughtcrime.SMP.components.ExpiredBuildReminder;
+import org.thoughtcrime.SMP.components.PushRegistrationReminder;
+import org.thoughtcrime.SMP.components.SystemSmsImportReminder;
+import org.thoughtcrime.SMP.util.TextSecurePreferences;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
@@ -39,10 +39,10 @@ import static android.support.test.espresso.matcher.ViewMatchers.withContentDesc
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
-import static org.thoughtcrime.securesms.EspressoUtil.addContact;
-import static org.thoughtcrime.securesms.EspressoUtil.waitOn;
-import static org.thoughtcrime.securesms.ViewMatchers.withRecyclerItem;
-import static org.thoughtcrime.securesms.ViewMatchers.withRecyclerItemCount;
+import static org.thoughtcrime.SMP.EspressoUtil.addContact;
+import static org.thoughtcrime.SMP.EspressoUtil.waitOn;
+import static org.thoughtcrime.SMP.ViewMatchers.withRecyclerItem;
+import static org.thoughtcrime.SMP.ViewMatchers.withRecyclerItemCount;
 
 @LargeTest
 public class ConversationListActivityTest extends TextSecureEspressoTestCase<ConversationListActivity> {

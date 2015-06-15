@@ -14,14 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.thoughtcrime.securesms.preferences;
+package org.thoughtcrime.SMP.preferences;
 
 import android.test.suitebuilder.annotation.LargeTest;
 
 import org.hamcrest.Matchers;
-import org.thoughtcrime.securesms.ConversationListActivity;
-import org.thoughtcrime.securesms.TextSecureEspressoTestCase;
-import org.thoughtcrime.securesms.util.TextSecurePreferences;
+import org.thoughtcrime.SMP.ConversationListActivity;
+import org.thoughtcrime.SMP.TextSecureEspressoTestCase;
+import org.thoughtcrime.SMP.util.TextSecurePreferences;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;

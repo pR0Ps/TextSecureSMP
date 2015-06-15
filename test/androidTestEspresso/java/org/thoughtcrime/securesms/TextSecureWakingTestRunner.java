@@ -14,14 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.thoughtcrime.securesms;
+package org.thoughtcrime.SMP;
 
 import android.app.Application;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.os.PowerManager;
 import android.support.test.runner.AndroidJUnitRunner;
-import android.util.Log;
 
 public class TextSecureWakingTestRunner extends AndroidJUnitRunner {
 

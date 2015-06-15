@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<org.thoughtcrime.securesms.contacts.ContactSelectionListItem
+<org.thoughtcrime.SMP.contacts.ContactSelectionListItem
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="?android:attr/listPreferredItemHeight"
@@ -70,4 +70,4 @@
         android:focusable="false"
         android:clickable="false" />
 
-</org.thoughtcrime.securesms.contacts.ContactSelectionListItem>
+</org.thoughtcrime.SMP.contacts.ContactSelectionListItem>

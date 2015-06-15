@@ -14,12 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.thoughtcrime.securesms;
+package org.thoughtcrime.SMP;
 
 import android.test.suitebuilder.annotation.LargeTest;
 
-import org.thoughtcrime.securesms.preferences.AppProtectionPreferenceFragmentActions;
-import org.thoughtcrime.securesms.util.TextSecurePreferences;
+import org.thoughtcrime.SMP.preferences.AppProtectionPreferenceFragmentActions;
+import org.thoughtcrime.SMP.util.TextSecurePreferences;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;

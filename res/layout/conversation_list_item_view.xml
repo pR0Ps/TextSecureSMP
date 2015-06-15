@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<org.thoughtcrime.securesms.ConversationListItem
+<org.thoughtcrime.SMP.ConversationListItem
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -7,7 +7,7 @@
         android:background="@drawable/conversation_list_item_background"
         android:layout_height="70dp">
 
-    <org.thoughtcrime.securesms.components.AvatarImageView
+    <org.thoughtcrime.SMP.components.AvatarImageView
         android:id="@+id/contact_photo_image"
         android:foreground="@drawable/contact_photo_background"
         android:layout_width="50dp"
@@ -40,7 +40,7 @@
             android:weightSum="1"
             android:gravity="bottom">
 
-            <org.thoughtcrime.securesms.components.FromTextView
+            <org.thoughtcrime.SMP.components.FromTextView
                       android:id="@+id/from"
                       android:layout_weight="1"
                       android:layout_width="0dp"
@@ -72,7 +72,7 @@
                       android:layout_gravity="top" />
             </LinearLayout>
 
-        <org.thoughtcrime.securesms.components.emoji.EmojiTextView
+        <org.thoughtcrime.SMP.components.emoji.EmojiTextView
                   android:id="@+id/subject"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
@@ -84,4 +84,4 @@
                   android:ellipsize="end" />
 
     </LinearLayout>
-</org.thoughtcrime.securesms.ConversationListItem>
+</org.thoughtcrime.SMP.ConversationListItem>
