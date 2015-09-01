@@ -1,8 +1,6 @@
 package org.thoughtcrime.SMP.components;
 
-import android.content.Context;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 
 import org.thoughtcrime.SMP.R;
 

@@ -18,16 +18,11 @@ package org.thoughtcrime.SMP.components;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.annotation.DrawableRes;
 import android.util.AttributeSet;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 
 import org.thoughtcrime.SMP.R;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 public class OutgoingBubbleContainer extends BubbleContainer {
   private static final boolean[] CORNERS_MESSAGE_CAPTIONED = new boolean[]{true, false, true,  true};

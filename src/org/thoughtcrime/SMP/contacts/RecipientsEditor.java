@@ -30,7 +30,6 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MotionEvent;
 import android.view.inputmethod.EditorInfo;
@@ -38,7 +37,6 @@ import android.widget.MultiAutoCompleteTextView;
 
 import org.thoughtcrime.SMP.recipients.Recipient;
 import org.thoughtcrime.SMP.recipients.RecipientFactory;
-import org.thoughtcrime.SMP.recipients.RecipientFormattingException;
 import org.thoughtcrime.SMP.recipients.Recipients;
 import org.thoughtcrime.SMP.recipients.RecipientsFormatter;
 

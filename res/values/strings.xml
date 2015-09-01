@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">TextSecure</string>
+    <string name="app_name">TextSecure-Dissertation</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="delete">Delete</string>
@@ -124,6 +124,9 @@
     <string name="ConversationActivity_unblock_question">Unblock?</string>
     <string name="ConversationActivity_are_you_sure_you_want_to_unblock_this_contact">Are you sure you want to unblock this contact?</string>
     <string name="ConversationActivity_unblock">Unblock</string>
+    <string name="ConversationActivity_smp_session_start_verification">Session Verification</string>
+    <string name="ConversationActivity_smp_session_start_question">Your chat partner would like to verify this session via Socialist Millionair Protocol?</string>
+    <string name="ConversationActivity_smp_session_accept">Accept!</string>
 
     <!-- ConversationFragment -->
     <string name="ConversationFragment_message_details">Message details</string>
@@ -419,6 +422,9 @@
 
     <!-- EncryptingSmsDatabase -->
     <string name="EncryptingSmsDatabase_error_decrypting_message">Error decrypting message.</string>
+
+    <!-- EncryptingSMPDatabase -->
+    <string name="EncryptingSMPDatabase_error_decrypting_message">Error decrypting message.</string>
 
     <!-- ThreadDatabase -->
     <string name="ThreadDatabase_error_decrypting_message">Error decrypting message.</string>

@@ -18,6 +18,7 @@ package org.thoughtcrime.SMP.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -28,6 +29,8 @@ import android.util.Log;
 import android.util.Pair;
 
 import org.thoughtcrime.SMP.ApplicationContext;
+import org.thoughtcrime.SMP.sms.IncomingSMPMessage;
+import org.thoughtcrime.SMP.sms.OutgoingSMPMessage;
 import org.thoughtcrime.SMP.database.documents.IdentityKeyMismatch;
 import org.thoughtcrime.SMP.database.documents.IdentityKeyMismatchList;
 import org.thoughtcrime.SMP.database.model.DisplayRecord;
@@ -418,6 +421,129 @@ public class SmsDatabase extends MessagingDatabase {
     return new Pair<>(messageId, threadId);
   }
 
+  //TODO: adapt for SMP
+  protected Pair<Long, Long> insertMessageInbox(IncomingSMPMessage message, long type) {
+    /*
+    if (message.isPreKeyBundle()) {
+      type |= Types.KEY_EXCHANGE_BIT | Types.KEY_EXCHANGE_BUNDLE_BIT;
+      Log.d(TAG, "insertMessageInbox.isPreKeyBundle  type: " + type);
+    } else if (message.isSecureMessage()) {
+      type |= Types.SECURE_MESSAGE_BIT;
+      Log.d(TAG, "insertMessageInbox.isSecureMessage type: " + type);
+    } else if (message.isGroup()) {
+      type |= Types.SECURE_MESSAGE_BIT;
+      if      (((IncomingGroupSMPMessage)message).isUpdate()) type |= Types.GROUP_UPDATE_BIT;
+      else if (((IncomingGroupSMPMessage)message).isQuit())   type |= Types.GROUP_QUIT_BIT;
+    } else if (message.isEndSession()) {
+      type |= Types.SECURE_MESSAGE_BIT;
+      type |= Types.END_SESSION_BIT;
+      Log.d(TAG, "insertMessageInbox.isEndSession type: " + type);
+    } else if (message.isSMPMessage()) {
+      type |= Types.SMP_MESSAGE_BIT;
+      Log.d(TAG, "insertMessageInbox.isSMPMessage type: " + type);
+    } else if (message.isSMPSyncMessage()) {
+      type |= Types.SMP_MESSAGE_BIT;
+      type |= Types.SMP_SYN_MESSAGE_BIT;
+      Log.d(TAG, "insertMessageInbox.isSMPSyncMessage type: " + type);
+    }
+    */
+
+    if (message.isSMPMessage()) {
+      type |= Types.SECURE_MESSAGE_BIT;
+      type |= Types.SMP_MESSAGE_BIT;
+      Log.d(TAG, "insertMessageInbox.isSMPMessage type: " + type);
+    }
+
+    if (message.isSMPSyncMessage()) {
+      type |= Types.SMP_SYN_MESSAGE_BIT;
+      Log.d(TAG, "insertMessageInbox.isSMPSyncMessage type: " + type);
+    }
+
+    Log.d(TAG, "insertMessageInbox.isPreKeyBundle(): " + message.isPreKeyBundle());
+    Log.d(TAG, "insertMessageInbox.isSecureMessage(): " + message.isSecureMessage());
+    Log.d(TAG, "insertMessageInbox.isGroup(): " + message.isGroup());
+    Log.d(TAG, "insertMessageInbox.isEndSession(): " + message.isEndSession());
+    Log.d(TAG, "insertMessageInbox.isSMPMessage(): " + message.isSMPMessage());
+    Log.d(TAG, "insertMessageInbox.isSMPSyncMessage(): " + message.isSMPSyncMessage());
+
+    //Log.d(TAG, "insertMessageInbox.isPush(): " + message.isPush());
+    if (message.isPush()) type |= Types.PUSH_MESSAGE_BIT;
+
+    Log.d(TAG, "insertMessageInbox type: " + type);
+
+    Recipients recipients;
+
+    if (message.getSender() != null) {
+      recipients = RecipientFactory.getRecipientsFromString(context, message.getSender(), true);
+    } else {
+      Log.w(TAG, "Sender is null, returning unknown recipient");
+      recipients = RecipientFactory.getRecipientsFor(context, Recipient.getUnknownRecipient(context), false);
+    }
+
+    Recipients groupRecipients;
+
+    if (message.getGroupId() == null) {
+      groupRecipients = null;
+    } else {
+      groupRecipients = RecipientFactory.getRecipientsFromString(context, message.getGroupId(), true);
+    }
+
+    boolean    unread     = org.thoughtcrime.SMP.util.Util.isDefaultSmsProvider(context) ||
+      message.isSecureMessage() || message.isPreKeyBundle();
+
+    long       threadId;
+
+    if (groupRecipients == null) threadId = DatabaseFactory.getThreadDatabase(context).getThreadIdFor(recipients);
+    else                         threadId = DatabaseFactory.getThreadDatabase(context).getThreadIdFor(groupRecipients);
+
+    ContentValues values = new ContentValues(6);
+    values.put(ADDRESS, message.getSender());
+    values.put(ADDRESS_DEVICE_ID,  message.getSenderDeviceId());
+    values.put(DATE_RECEIVED, System.currentTimeMillis());
+    values.put(DATE_SENT, message.getSentTimestampMillis());
+    values.put(PROTOCOL, message.getProtocol());
+    values.put(READ, unread ? 0 : 1);
+
+    if (!TextUtils.isEmpty(message.getPseudoSubject()))
+      values.put(SUBJECT, message.getPseudoSubject());
+
+    values.put(REPLY_PATH_PRESENT, message.isReplyPathPresent());
+    values.put(SERVICE_CENTER, message.getServiceCenterAddress());
+    values.put(BODY, message.getMessageBody());
+    values.put(TYPE, type);
+    values.put(THREAD_ID, threadId);
+
+    Log.d(TAG, "insertMessageInbox values: " + values.toString());
+
+    SQLiteDatabase db = databaseHelper.getWritableDatabase();
+    long messageId    = db.insert(TABLE_NAME, null, values);
+    Log.d(TAG, "insertMessageInbox messageId: " + messageId);
+
+    SharedPreferences prefs = context.getSharedPreferences("org.thoughtcrime.SMP.SMP", Context
+      .MODE_PRIVATE);
+    prefs.edit().putInt("messageId", (int) messageId).apply();
+    Log.d(TAG, "insertMessageInbox after SharedPreferences");
+
+    if (unread) {
+      DatabaseFactory.getThreadDatabase(context).setUnread(threadId);
+    }
+
+    DatabaseFactory.getThreadDatabase(context).update(threadId);
+    notifyConversationListeners(threadId);
+/*
+    if (!message.isSMPSyncMessage()) {
+      Log.d(TAG, "insertMessageInbox.notifyConversationsListeners -> SMP");
+      notifySMPConversationListeners(threadId, false);
+    } else {
+      Log.d(TAG, "insertMessageInbox.notifyConversationsListeners -> SMPSync");
+      notifySMPConversationListeners(threadId, true);
+    }
+*/
+    jobManager.add(new TrimThreadJob(context, threadId));
+
+    return new Pair<>(messageId, threadId);
+  }
+
   public Pair<Long, Long> insertMessageInbox(IncomingTextMessage message) {
     return insertMessageInbox(message, Types.BASE_INBOX_TYPE);
   }
@@ -440,7 +566,36 @@ public class SmsDatabase extends MessagingDatabase {
     contentValues.put(TYPE, type);
 
     SQLiteDatabase db        = databaseHelper.getWritableDatabase();
-    long           messageId = db.insert(TABLE_NAME, ADDRESS, contentValues);
+    long messageId           = db.insert(TABLE_NAME, ADDRESS, contentValues);
+
+    DatabaseFactory.getThreadDatabase(context).update(threadId);
+    notifyConversationListeners(threadId);
+    jobManager.add(new TrimThreadJob(context, threadId));
+
+    return messageId;
+  }
+
+  //TODO: adapt to SMP
+  protected long insertMessageOutbox(long threadId, OutgoingSMPMessage message,
+                                     long type, boolean forceSms, long date)
+  {
+    if      (message.isSMPSyncMessage())   type |= Types.SMP_SYN_MESSAGE_BIT;
+    else if (message.isSecureMessage()) type |= Types.SECURE_MESSAGE_BIT;
+    else if (message.isEndSession())    type |= Types.END_SESSION_BIT;
+    else if (message.isSMPMessage())    type |= Types.SMP_MESSAGE_BIT;
+    if      (forceSms)                  type |= Types.MESSAGE_FORCE_SMS_BIT;
+
+    ContentValues contentValues = new ContentValues(6);
+    contentValues.put(ADDRESS, PhoneNumberUtils.formatNumber(message.getRecipients().getPrimaryRecipient().getNumber()));
+    contentValues.put(THREAD_ID, threadId);
+    contentValues.put(BODY, message.getMessageBody());
+    contentValues.put(DATE_RECEIVED, date);
+    contentValues.put(DATE_SENT, date);
+    contentValues.put(READ, 1);
+    contentValues.put(TYPE, type);
+
+    SQLiteDatabase db = databaseHelper.getWritableDatabase();
+    long messageId    = db.insert(TABLE_NAME, ADDRESS, contentValues);
 
     DatabaseFactory.getThreadDatabase(context).update(threadId);
     notifyConversationListeners(threadId);
@@ -479,6 +634,17 @@ public class SmsDatabase extends MessagingDatabase {
     Cursor         cursor = db.query(TABLE_NAME, MESSAGE_PROJECTION, ID_WHERE, new String[]{messageId + ""},
                                      null, null, null);
     setNotifyConverationListeners(cursor, getThreadIdForMessage(messageId));
+    return cursor;
+  }
+
+  //TODO: adapt to SMP
+  public Cursor getLastSMPMessage() {
+    SQLiteDatabase db     = databaseHelper.getReadableDatabase();
+    String query = "SELECT * FROM " + TABLE_NAME + " ORDER BY " + ID + " DESC LIMIT 1";
+
+    //public Cursor query (String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy, String limit)
+    Cursor cursor = db.query(TABLE_NAME, MESSAGE_PROJECTION, null, null, null, null, null, null);
+
     return cursor;
   }
 

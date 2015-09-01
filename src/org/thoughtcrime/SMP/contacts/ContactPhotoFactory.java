@@ -18,7 +18,6 @@ import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.makeramen.RoundedDrawable;
 
 import org.thoughtcrime.SMP.R;
-import org.thoughtcrime.SMP.recipients.Recipient;
 import org.thoughtcrime.SMP.util.BitmapDecodingException;
 import org.thoughtcrime.SMP.util.BitmapUtil;
 import org.thoughtcrime.SMP.util.LRUCache;

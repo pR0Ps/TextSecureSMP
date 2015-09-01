@@ -6,10 +6,13 @@ import android.util.Pair;
 
 import org.thoughtcrime.SMP.ApplicationContext;
 import org.thoughtcrime.SMP.crypto.MasterSecret;
+import org.thoughtcrime.SMP.crypto.SMP.TextSecureSMPCipher;
+import org.thoughtcrime.SMP.crypto.SMP.TextSecureSMPMessage;
 import org.thoughtcrime.SMP.crypto.SecurityEvent;
 import org.thoughtcrime.SMP.crypto.storage.TextSecureAxolotlStore;
 import org.thoughtcrime.SMP.crypto.storage.TextSecureSessionStore;
 import org.thoughtcrime.SMP.database.DatabaseFactory;
+import org.thoughtcrime.SMP.database.EncryptingSMPDatabase;
 import org.thoughtcrime.SMP.database.EncryptingSmsDatabase;
 import org.thoughtcrime.SMP.database.MmsDatabase;
 import org.thoughtcrime.SMP.database.NoSuchMessageException;
@@ -24,8 +27,11 @@ import org.thoughtcrime.SMP.recipients.RecipientFactory;
 import org.thoughtcrime.SMP.recipients.Recipients;
 import org.thoughtcrime.SMP.service.KeyCachingService;
 import org.thoughtcrime.SMP.sms.IncomingEncryptedMessage;
+import org.thoughtcrime.SMP.sms.IncomingEncryptedSMPMessage;
+import org.thoughtcrime.SMP.sms.IncomingEncryptedSMPSyncMessage;
 import org.thoughtcrime.SMP.sms.IncomingEndSessionMessage;
 import org.thoughtcrime.SMP.sms.IncomingPreKeyBundleMessage;
+import org.thoughtcrime.SMP.sms.IncomingSMPMessage;
 import org.thoughtcrime.SMP.sms.IncomingTextMessage;
 import org.thoughtcrime.SMP.sms.OutgoingTextMessage;
 import org.thoughtcrime.SMP.util.Base64;
@@ -45,7 +51,6 @@ import org.whispersystems.libaxolotl.protocol.PreKeyWhisperMessage;
 import org.whispersystems.libaxolotl.state.AxolotlStore;
 import org.whispersystems.libaxolotl.state.SessionStore;
 import org.whispersystems.libaxolotl.util.guava.Optional;
-import org.whispersystems.textsecure.api.crypto.TextSecureCipher;
 import org.whispersystems.textsecure.api.messages.TextSecureEnvelope;
 import org.whispersystems.textsecure.api.messages.TextSecureGroup;
 import org.whispersystems.textsecure.api.messages.TextSecureMessage;
@@ -110,13 +115,18 @@ public class PushDecryptJob extends MasterSecretJob {
     try {
       AxolotlStore      axolotlStore = new TextSecureAxolotlStore(context, masterSecret);
       TextSecureAddress localAddress = new TextSecureAddress(TextSecurePreferences.getLocalNumber(context));
-      TextSecureCipher  cipher       = new TextSecureCipher(localAddress, axolotlStore);
+      TextSecureSMPCipher cipher     = new TextSecureSMPCipher(localAddress, axolotlStore);
 
-      TextSecureMessage message = cipher.decrypt(envelope);
+      TextSecureSMPMessage message = cipher.decrypt(envelope);
+
+      Log.d(TAG, "handleMessage() isSMPMessage: " + message.isSMPMessage());
 
       if      (message.isEndSession())               handleEndSessionMessage(masterSecret, envelope, message, smsMessageId);
       else if (message.isGroupUpdate())              handleGroupMessage(masterSecret, envelope, message, smsMessageId);
       else if (message.getAttachments().isPresent()) handleMediaMessage(masterSecret, envelope, message, smsMessageId);
+
+      // TODO: handleSMPMessage
+      else if (message.isSMPMessage())               handleSMPMessage(masterSecret, envelope, message);
       else                                           handleTextMessage(masterSecret, envelope, message, smsMessageId);
 
       if (envelope.isPreKeyWhisperMessage()) {
@@ -196,6 +206,25 @@ public class PushDecryptJob extends MasterSecretJob {
 
     if (smsMessageId.isPresent()) {
       DatabaseFactory.getSmsDatabase(context).deleteMessage(smsMessageId.get());
+    }
+
+    MessageNotifier.updateNotification(context, masterSecret, messageAndThreadId.second);
+  }
+
+  // TODO: handleSMPMessage
+  private void handleSMPMessage (MasterSecret masterSecret, TextSecureEnvelope envelope,
+                                 TextSecureSMPMessage message)
+  {
+    Pair<Long, Long> messageAndThreadId;
+
+    // TODO: make this a boolean flag
+    Log.d(TAG, "handleSMPMessage isSMPSyncMessage: " + message.isSMPSyncMessage());
+    if(message.isSMPSyncMessage()) {
+      Log.d(TAG, "isSMPSyncContext: true");
+      messageAndThreadId = insertSyncSMPMessage(masterSecret, envelope, message);
+    } else {
+      Log.d(TAG, "isStandardSMPMessage: true");
+      messageAndThreadId = insertStandardSMPMessage(masterSecret, envelope, message);
     }
 
     MessageNotifier.updateNotification(context, masterSecret, messageAndThreadId.second);
@@ -360,6 +389,49 @@ public class PushDecryptJob extends MasterSecretJob {
 
       return database.insertMessageInbox(masterSecret, textMessage);
     }
+  }
+
+  // TODO: build correct method logic here
+  private Pair<Long, Long> insertSyncSMPMessage (MasterSecret masterSecret,
+                                                 TextSecureEnvelope envelope,
+                                                 TextSecureSMPMessage message)
+  {
+
+    EncryptingSMPDatabase database = DatabaseFactory.getEncryptingSMPDatabase(context);
+    String                body     = message.getBody().isPresent() ? message.getBody().get() : "";
+
+
+    IncomingSMPMessage smpMessage = new IncomingSMPMessage(envelope.getSource(),
+      envelope.getSourceDevice(),
+      message.getTimestamp(), body,
+      message.getGroupInfo());
+
+    smpMessage = new IncomingEncryptedSMPSyncMessage(smpMessage, body);
+
+    return database.insertMessageInbox(masterSecret, smpMessage);
+
+  }
+
+
+  // TODO: build correct method logic here
+  private Pair<Long, Long> insertStandardSMPMessage (MasterSecret masterSecret,
+                                                     TextSecureEnvelope envelope,
+                                                     TextSecureSMPMessage message)
+  {
+    // TODO: extend database by SMP
+    EncryptingSMPDatabase database = DatabaseFactory.getEncryptingSMPDatabase(context);
+    String                body     = message.getBody().isPresent() ? message.getBody().get() : "";
+
+    IncomingSMPMessage smpMessage = new IncomingSMPMessage(envelope.getSource(),
+      envelope.getSourceDevice(),
+      message.getTimestamp(), body,
+      message.getGroupInfo());
+
+    smpMessage = new IncomingEncryptedSMPMessage(smpMessage, body);
+
+    // TODO: build SMP part in DB
+    return database.insertMessageInbox(masterSecret, smpMessage);
+
   }
 
   private Pair<Long, Long> insertSyncMediaMessage(MasterSecret masterSecret,

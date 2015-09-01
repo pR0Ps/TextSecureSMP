@@ -27,6 +27,8 @@ import org.thoughtcrime.SMP.crypto.AsymmetricMasterCipher;
 import org.thoughtcrime.SMP.crypto.AsymmetricMasterSecret;
 import org.thoughtcrime.SMP.crypto.MasterCipher;
 import org.thoughtcrime.SMP.crypto.MasterSecret;
+import org.thoughtcrime.SMP.sms.IncomingSMPMessage;
+import org.thoughtcrime.SMP.sms.OutgoingSMPMessage;
 import org.thoughtcrime.SMP.database.model.DisplayRecord;
 import org.thoughtcrime.SMP.database.model.SmsMessageRecord;
 import org.thoughtcrime.SMP.sms.IncomingTextMessage;
@@ -36,11 +38,11 @@ import org.whispersystems.libaxolotl.InvalidMessageException;
 
 import java.lang.ref.SoftReference;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 public class EncryptingSmsDatabase extends SmsDatabase {
 
+  public static final String TAG = EncryptingSmsDatabase.class.getSimpleName();
   private final PlaintextCache plaintextCache = new PlaintextCache();
 
   public EncryptingSmsDatabase(Context context, SQLiteOpenHelper databaseHelper) {
@@ -71,6 +73,19 @@ public class EncryptingSmsDatabase extends SmsDatabase {
     return insertMessageOutbox(threadId, message, type, forceSms, timestamp);
   }
 
+  // TODO: adapt message to SMP
+  public long insertMessageOutbox(MasterSecret masterSecret, long threadId,
+                                  OutgoingSMPMessage message, boolean forceSms,
+                                  long timestamp)
+  {
+    long type = Types.BASE_OUTBOX_TYPE;
+    message   = message.withBody(getEncryptedBody(masterSecret, message.getMessageBody()));
+    type     |= Types.ENCRYPTION_SYMMETRIC_BIT;
+
+    return insertMessageOutbox(threadId, message, type, forceSms, timestamp);
+  }
+
+
   public Pair<Long, Long> insertMessageInbox(MasterSecret masterSecret,
                                              IncomingTextMessage message)
   {
@@ -79,6 +94,29 @@ public class EncryptingSmsDatabase extends SmsDatabase {
     if (masterSecret == null && message.isSecureMessage()) {
       type |= Types.ENCRYPTION_REMOTE_BIT;
     } else {
+      type |= Types.ENCRYPTION_SYMMETRIC_BIT;
+      message = message.withMessageBody(getEncryptedBody(masterSecret, message.getMessageBody()));
+    }
+
+    return insertMessageInbox(message, type);
+  }
+
+  public Pair<Long, Long> insertMessageInbox(MasterSecret masterSecret,
+                                             IncomingSMPMessage message)
+  {
+    long type = Types.BASE_INBOX_TYPE;
+
+    if (masterSecret == null && message.isSecureMessage()) {
+      Log.d(TAG, "insertMessageInbox.isSecureMessage");
+      type |= Types.ENCRYPTION_REMOTE_BIT;
+    } else if(message.isSMPSyncMessage()) {
+      Log.d(TAG, "insertMessageInbox.isSMPSyncMessage");
+      //TODO:set correct bit to SMP_SYN_BIT
+      type |= Types.ENCRYPTION_SYMMETRIC_BIT;
+
+      message = message.withMessageBody(getEncryptedBody(masterSecret, message.getMessageBody()));
+    } else {
+      Log.d(TAG, "insertMessageInbox.isSMPMessage");
       type |= Types.ENCRYPTION_SYMMETRIC_BIT;
       message = message.withMessageBody(getEncryptedBody(masterSecret, message.getMessageBody()));
     }

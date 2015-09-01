@@ -10,8 +10,6 @@ import org.thoughtcrime.SMP.jobs.requirements.MasterSecretRequirement;
 import org.thoughtcrime.SMP.mms.PartAuthority;
 import org.thoughtcrime.SMP.notifications.MessageNotifier;
 import org.thoughtcrime.SMP.recipients.Recipients;
-import org.thoughtcrime.SMP.util.GroupUtil;
-import org.thoughtcrime.SMP.util.TextSecurePreferences;
 import org.thoughtcrime.SMP.util.Util;
 import org.whispersystems.jobqueue.JobParameters;
 import org.whispersystems.jobqueue.requirements.NetworkRequirement;

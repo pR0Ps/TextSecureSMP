@@ -1,8 +1,6 @@
 package org.thoughtcrime.SMP.jobs;
 
 import android.content.Context;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.util.Log;
 
 import org.thoughtcrime.SMP.crypto.MasterSecret;
@@ -10,13 +8,9 @@ import org.thoughtcrime.SMP.database.DatabaseFactory;
 import org.thoughtcrime.SMP.database.MmsDatabase;
 import org.thoughtcrime.SMP.database.NoSuchMessageException;
 import org.thoughtcrime.SMP.jobs.requirements.MasterSecretRequirement;
-import org.thoughtcrime.SMP.mms.ApnUnavailableException;
 import org.thoughtcrime.SMP.mms.CompatMmsConnection;
 import org.thoughtcrime.SMP.mms.MediaConstraints;
 import org.thoughtcrime.SMP.mms.MmsSendResult;
-import org.thoughtcrime.SMP.mms.OutgoingLegacyMmsConnection;
-import org.thoughtcrime.SMP.mms.OutgoingLollipopMmsConnection;
-import org.thoughtcrime.SMP.mms.OutgoingMmsConnection;
 import org.thoughtcrime.SMP.notifications.MessageNotifier;
 import org.thoughtcrime.SMP.recipients.Recipients;
 import org.thoughtcrime.SMP.transport.InsecureFallbackApprovalException;

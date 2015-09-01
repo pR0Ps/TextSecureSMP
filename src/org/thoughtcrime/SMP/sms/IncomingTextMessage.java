@@ -176,6 +176,14 @@ public class IncomingTextMessage implements Parcelable {
     return false;
   }
 
+  public boolean isSMPMessage() {
+    return false;
+  }
+
+  public boolean isSMPSyncMessage() {
+    return false;
+  }
+
   public boolean isPush() {
     return push;
   }

@@ -4,9 +4,6 @@ import android.content.ContentUris;
 import android.net.Uri;
 
 import org.thoughtcrime.SMP.database.PartDatabase;
-import org.thoughtcrime.SMP.util.Hex;
-
-import java.io.IOException;
 
 public class PartUriParser {
 

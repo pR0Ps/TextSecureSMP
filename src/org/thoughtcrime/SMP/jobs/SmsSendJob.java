@@ -19,7 +19,6 @@ import org.thoughtcrime.SMP.jobs.requirements.ServiceRequirement;
 import org.thoughtcrime.SMP.notifications.MessageNotifier;
 import org.thoughtcrime.SMP.recipients.Recipients;
 import org.thoughtcrime.SMP.service.SmsDeliveryListener;
-import org.thoughtcrime.SMP.transport.InsecureFallbackApprovalException;
 import org.thoughtcrime.SMP.transport.UndeliverableMessageException;
 import org.thoughtcrime.SMP.util.NumberUtil;
 import org.thoughtcrime.SMP.util.TextSecurePreferences;

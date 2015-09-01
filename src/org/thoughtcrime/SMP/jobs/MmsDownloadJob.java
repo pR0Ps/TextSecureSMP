@@ -2,8 +2,6 @@ package org.thoughtcrime.SMP.jobs;
 
 import android.content.Context;
 import android.net.Uri;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.util.Log;
 import android.util.Pair;
 
@@ -13,10 +11,7 @@ import org.thoughtcrime.SMP.database.MmsDatabase;
 import org.thoughtcrime.SMP.jobs.requirements.MasterSecretRequirement;
 import org.thoughtcrime.SMP.mms.ApnUnavailableException;
 import org.thoughtcrime.SMP.mms.CompatMmsConnection;
-import org.thoughtcrime.SMP.mms.IncomingLollipopMmsConnection;
 import org.thoughtcrime.SMP.mms.IncomingMediaMessage;
-import org.thoughtcrime.SMP.mms.IncomingLegacyMmsConnection;
-import org.thoughtcrime.SMP.mms.IncomingMmsConnection;
 import org.thoughtcrime.SMP.mms.MmsRadioException;
 import org.thoughtcrime.SMP.notifications.MessageNotifier;
 import org.thoughtcrime.SMP.protocol.WirePrefix;

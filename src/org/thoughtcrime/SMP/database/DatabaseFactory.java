@@ -72,7 +72,9 @@ public class DatabaseFactory {
   private DatabaseHelper databaseHelper;
 
   private final SmsDatabase sms;
+  private final SMPDatabase smp;
   private final EncryptingSmsDatabase encryptingSms;
+  private final EncryptingSMPDatabase encryptingSMP;
   private final MmsDatabase mms;
   private final PartDatabase part;
   private final ThreadDatabase thread;
@@ -106,6 +108,10 @@ public class DatabaseFactory {
     return getInstance(context).sms;
   }
 
+  public static SMPDatabase getSMPDatabase(Context context) {
+    return getInstance(context).smp;
+  }
+
   public static MmsDatabase getMmsDatabase(Context context) {
     return getInstance(context).mms;
   }
@@ -116,6 +122,10 @@ public class DatabaseFactory {
 
   public static EncryptingSmsDatabase getEncryptingSmsDatabase(Context context) {
     return getInstance(context).encryptingSms;
+  }
+
+  public static EncryptingSMPDatabase getEncryptingSMPDatabase(Context context) {
+    return getInstance(context).encryptingSMP;
   }
 
   public static PartDatabase getPartDatabase(Context context) {
@@ -149,7 +159,9 @@ public class DatabaseFactory {
   private DatabaseFactory(Context context) {
     this.databaseHelper              = new DatabaseHelper(context, DATABASE_NAME, null, DATABASE_VERSION);
     this.sms                         = new SmsDatabase(context, databaseHelper);
+    this.smp                         = new SMPDatabase(context, databaseHelper);
     this.encryptingSms               = new EncryptingSmsDatabase(context, databaseHelper);
+    this.encryptingSMP               = new EncryptingSMPDatabase(context, databaseHelper);
     this.mms                         = new MmsDatabase(context, databaseHelper);
     this.part                        = new PartDatabase(context, databaseHelper);
     this.thread                      = new ThreadDatabase(context, databaseHelper);
@@ -168,7 +180,9 @@ public class DatabaseFactory {
     this.databaseHelper = new DatabaseHelper(context, DATABASE_NAME, null, DATABASE_VERSION);
 
     this.sms.reset(databaseHelper);
+    this.smp.reset(databaseHelper);
     this.encryptingSms.reset(databaseHelper);
+    this.encryptingSMP.reset(databaseHelper);
     this.mms.reset(databaseHelper);
     this.part.reset(databaseHelper);
     this.thread.reset(databaseHelper);
@@ -480,6 +494,7 @@ public class DatabaseFactory {
     @Override
     public void onCreate(SQLiteDatabase db) {
       db.execSQL(SmsDatabase.CREATE_TABLE);
+      db.execSQL(SMPDatabase.CREATE_TABLE);
       db.execSQL(MmsDatabase.CREATE_TABLE);
       db.execSQL(PartDatabase.CREATE_TABLE);
       db.execSQL(ThreadDatabase.CREATE_TABLE);
@@ -491,6 +506,7 @@ public class DatabaseFactory {
       db.execSQL(RecipientPreferenceDatabase.CREATE_TABLE);
 
       executeStatements(db, SmsDatabase.CREATE_INDEXS);
+      executeStatements(db, SMPDatabase.CREATE_INDEXS);
       executeStatements(db, MmsDatabase.CREATE_INDEXS);
       executeStatements(db, PartDatabase.CREATE_INDEXS);
       executeStatements(db, ThreadDatabase.CREATE_INDEXS);

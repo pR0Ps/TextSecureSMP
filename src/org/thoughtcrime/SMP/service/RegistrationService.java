@@ -21,7 +21,6 @@ import org.thoughtcrime.SMP.jobs.GcmRefreshJob;
 import org.thoughtcrime.SMP.push.TextSecureCommunicationFactory;
 import org.thoughtcrime.SMP.recipients.Recipient;
 import org.thoughtcrime.SMP.recipients.RecipientFactory;
-import org.thoughtcrime.SMP.recipients.RecipientFormattingException;
 import org.thoughtcrime.SMP.util.DirectoryHelper;
 import org.thoughtcrime.SMP.util.TextSecurePreferences;
 import org.thoughtcrime.SMP.util.Util;

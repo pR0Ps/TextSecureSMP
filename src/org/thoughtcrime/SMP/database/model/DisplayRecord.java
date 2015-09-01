@@ -83,6 +83,15 @@ public abstract class DisplayRecord {
     return SmsDatabase.Types.isEndSessionType(type);
   }
 
+  // TODO: adapt to SMP
+  public boolean isSMPMessage() {
+    return SmsDatabase.Types.isSMPMessage(type);
+  }
+
+  public boolean isSMPSyncMessage() {
+    return SmsDatabase.Types.isSMPSyncMessage(type);
+  }
+
   public boolean isGroupUpdate() {
     return SmsDatabase.Types.isGroupUpdate(type);
   }

@@ -19,17 +19,12 @@ package org.thoughtcrime.SMP.components;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.AutoCompleteTextView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import org.thoughtcrime.SMP.R;
-import org.thoughtcrime.SMP.contacts.ContactAccessor;
 import org.thoughtcrime.SMP.contacts.RecipientsAdapter;
 import org.thoughtcrime.SMP.contacts.RecipientsEditor;
 import org.thoughtcrime.SMP.recipients.Recipient;
@@ -37,11 +32,9 @@ import org.thoughtcrime.SMP.recipients.RecipientFactory;
 import org.thoughtcrime.SMP.recipients.RecipientFormattingException;
 import org.thoughtcrime.SMP.recipients.Recipients;
 
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Panel component combining both an editable field with a button for

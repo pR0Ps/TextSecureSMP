@@ -20,10 +20,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
+import android.util.Log;
 
 import java.util.Set;
 
 public abstract class Database {
+
+  private static final String TAG = Database.class.getSimpleName();
 
   protected static final String ID_WHERE              = "_id = ?";
   private   static final String CONVERSATION_URI      = "content://textsecure/thread/";
@@ -44,6 +47,20 @@ public abstract class Database {
 
   protected void notifyConversationListeners(long threadId) {
     context.getContentResolver().notifyChange(Uri.parse(CONVERSATION_URI + threadId), null);
+  }
+
+  // TODO: adapt to SMP
+  protected void notifySMPConversationListeners(long threadId, boolean smpSync) {
+    if (!smpSync) {
+      // TODO: think about this conversationListener URI again
+      Log.d(TAG, "notifySMPConversationListeners -> SMP");
+      context.getContentResolver().notifyChange(Uri.parse(CONVERSATION_URI + threadId + "/smp"), null);
+    } else {
+      Log.d(TAG, "notifySMPConversationListeners -> SMPSync");
+      context.getContentResolver().notifyChange(Uri.parse("content://textsecure/smpSync/thread/"
+        + threadId), null);
+    }
+
   }
 
   protected void notifyConversationListListeners() {

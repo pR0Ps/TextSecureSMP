@@ -206,6 +206,7 @@ public class ConfirmIdentityDialog extends AlertDialog {
       Intent intent = new Intent(context, VerifyIdentityActivity.class);
       intent.putExtra("recipient", mismatch.getRecipientId());
       intent.putExtra("remote_identity", new IdentityKeyParcelable(mismatch.getIdentityKey()));
+      intent.putExtra("initiator" , true);
       context.startActivity(intent);
     }
   }

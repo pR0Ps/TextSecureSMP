@@ -17,7 +17,6 @@
 package org.thoughtcrime.SMP;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,7 +25,6 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import org.thoughtcrime.SMP.crypto.MasterSecret;
 import org.thoughtcrime.SMP.util.Base64;
 import org.thoughtcrime.SMP.util.Dialogs;
 import org.thoughtcrime.SMP.util.DynamicLanguage;

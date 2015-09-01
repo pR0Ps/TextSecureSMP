@@ -25,7 +25,6 @@ import android.util.Log;
 
 import org.thoughtcrime.SMP.recipients.Recipient;
 import org.thoughtcrime.SMP.recipients.RecipientFactory;
-import org.thoughtcrime.SMP.recipients.RecipientFormattingException;
 import org.thoughtcrime.SMP.recipients.Recipients;
 
 import ws.com.google.android.mms.pdu.CharacterSets;

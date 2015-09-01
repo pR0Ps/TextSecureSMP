@@ -1,6 +1,5 @@
 package org.thoughtcrime.SMP.sms;
 
-import org.thoughtcrime.SMP.recipients.Recipient;
 import org.thoughtcrime.SMP.recipients.Recipients;
 
 public class OutgoingEncryptedMessage extends OutgoingTextMessage {

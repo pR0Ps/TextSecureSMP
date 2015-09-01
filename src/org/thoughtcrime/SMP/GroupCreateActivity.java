@@ -44,7 +44,6 @@ import com.google.protobuf.ByteString;
 import com.soundcloud.android.crop.Crop;
 
 import org.thoughtcrime.SMP.components.PushRecipientsPanel;
-import org.thoughtcrime.SMP.contacts.ContactAccessor;
 import org.thoughtcrime.SMP.contacts.RecipientsEditor;
 import org.thoughtcrime.SMP.database.DatabaseFactory;
 import org.thoughtcrime.SMP.database.GroupDatabase;
@@ -80,7 +79,6 @@ import java.util.Set;
 
 import ws.com.google.android.mms.MmsException;
 
-import static org.thoughtcrime.SMP.contacts.ContactAccessor.ContactData;
 import static org.whispersystems.textsecure.internal.push.PushMessageProtos.PushMessageContent.GroupContext;
 
 /**

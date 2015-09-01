@@ -48,7 +48,8 @@ public abstract class MessageRecord extends DisplayRecord {
   public static final int DELIVERY_STATUS_PENDING  = 2;
   public static final int DELIVERY_STATUS_FAILED   = 3;
 
-  private static final int MAX_DISPLAY_LENGTH = 2000;
+  // TODO: default is 2000
+  private static final int MAX_DISPLAY_LENGTH = 4000;
 
   private final Recipient                 individualRecipient;
   private final int                       recipientDeviceId;

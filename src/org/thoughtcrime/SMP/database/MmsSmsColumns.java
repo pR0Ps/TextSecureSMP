@@ -47,6 +47,10 @@ public interface MmsSmsColumns {
     protected static final long KEY_EXCHANGE_BUNDLE_BIT          =  0x400;
     protected static final long KEY_EXCHANGE_IDENTITY_UPDATE_BIT =  0x200;
 
+    // SMP Message Information
+    protected static final long SMP_MESSAGE_BIT = 0x6B;
+    protected static final long SMP_SYN_MESSAGE_BIT = 0x6D;
+
     // Secure Message Information
     protected static final long SECURE_MESSAGE_BIT = 0x800000;
     protected static final long END_SESSION_BIT    = 0x400000;
@@ -120,6 +124,15 @@ public interface MmsSmsColumns {
 
     public static boolean isEndSessionType(long type) {
       return (type & END_SESSION_BIT) != 0;
+    }
+
+    // TODO: adapt to SMP
+    public static boolean isSMPMessage(long type) {
+      return (type & SMP_MESSAGE_BIT) != 0;
+    }
+
+    public static boolean isSMPSyncMessage(long type) {
+      return (type & SMP_SYN_MESSAGE_BIT) != 0;
     }
 
     public static boolean isKeyExchangeType(long type) {

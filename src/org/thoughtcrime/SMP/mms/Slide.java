@@ -21,7 +21,6 @@ import android.content.res.Resources.Theme;
 import android.net.Uri;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import org.thoughtcrime.SMP.crypto.MasterSecret;
 import org.thoughtcrime.SMP.util.Util;

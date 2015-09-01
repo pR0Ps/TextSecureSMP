@@ -22,7 +22,9 @@ import android.util.Pair;
 
 import org.thoughtcrime.SMP.ApplicationContext;
 import org.thoughtcrime.SMP.crypto.MasterSecret;
+import org.thoughtcrime.SMP.crypto.SMP.PushSMPSendJob;
 import org.thoughtcrime.SMP.database.DatabaseFactory;
+import org.thoughtcrime.SMP.database.EncryptingSMPDatabase;
 import org.thoughtcrime.SMP.database.EncryptingSmsDatabase;
 import org.thoughtcrime.SMP.database.MmsDatabase;
 import org.thoughtcrime.SMP.database.NotInDirectoryException;
@@ -76,6 +78,34 @@ public class MessageSender {
     long messageId = database.insertMessageOutbox(masterSecret, allocatedThreadId, message, forceSms, System.currentTimeMillis());
 
     sendTextMessage(context, recipients, forceSms, keyExchange, messageId);
+
+    return allocatedThreadId;
+  }
+
+  // TODO: adapt to SMP
+  public static long send(final Context context,
+                          final MasterSecret masterSecret,
+                          final OutgoingSMPMessage message,
+                          final long threadId)
+  {
+    EncryptingSMPDatabase database    = DatabaseFactory.getEncryptingSMPDatabase(context);
+    Recipients            recipients  = message.getRecipients();
+
+    Log.d(TAG, "send recipients: " + message.getRecipients().getPrimaryRecipient().getNumber());
+
+    long allocatedThreadId;
+
+    if (threadId == -1) {
+      allocatedThreadId = DatabaseFactory.getThreadDatabase(context).getThreadIdFor(recipients);
+    } else {
+      allocatedThreadId = threadId;
+    }
+
+    long messageId = database.insertMessageOutbox(masterSecret, allocatedThreadId, message, System.currentTimeMillis());
+
+    Log.d(TAG, "smpSync: " + message.isSMPSyncMessage());
+    sendSMPMessage(context, recipients, messageId);
+    Log.d(TAG, "sendSMPMessage");
 
     return allocatedThreadId;
   }
@@ -156,13 +186,41 @@ public class MessageSender {
     if (!forceSms && isSelfSend(context, recipients)) {
       sendTextSelf(context, messageId);
     } else if (!forceSms && isPushTextSend(context, recipients, keyExchange)) {
+      Log.d(TAG, "sendTextMessagePush");
       sendTextPush(context, recipients, messageId);
     } else {
       sendSms(context, recipients, messageId);
     }
   }
 
+  // TODO: adapt to SMP
+  private static void sendSMPMessage(Context context, Recipients recipients, long messageId)
+  {
+    if (isSelfSend(context, recipients)) {
+      Log.d(TAG, "sendSMPSelf");
+      sendSMPSelf(context, messageId);
+    } else if (isPushSMPSend(context, recipients)) {
+      Log.d(TAG, "sendSMPPush");
+      sendSMPPush(context, recipients, messageId);
+    } else {
+      Log.d(TAG, "sendSMPSMS");
+      //sendSms(context, recipients, messageId);
+    }
+  }
+
+
   private static void sendTextSelf(Context context, long messageId) {
+    EncryptingSmsDatabase database = DatabaseFactory.getEncryptingSmsDatabase(context);
+
+    database.markAsSent(messageId);
+    database.markAsPush(messageId);
+
+    Pair<Long, Long> messageAndThreadId = database.copyMessageInbox(messageId);
+    database.markAsPush(messageAndThreadId.first);
+  }
+
+  //TODO: adapt to SMP
+  private static void sendSMPSelf(Context context, long messageId) {
     EncryptingSmsDatabase database = DatabaseFactory.getEncryptingSmsDatabase(context);
 
     database.markAsSent(messageId);
@@ -186,6 +244,15 @@ public class MessageSender {
   private static void sendTextPush(Context context, Recipients recipients, long messageId) {
     JobManager jobManager = ApplicationContext.getInstance(context).getJobManager();
     jobManager.add(new PushTextSendJob(context, messageId, recipients.getPrimaryRecipient().getNumber()));
+  }
+
+  // TODO: adapt to SMP
+  private static void sendSMPPush(Context context, Recipients recipients, long messageId)
+  {
+    JobManager jobManager = ApplicationContext.getInstance(context).getJobManager();
+    jobManager.add(new PushSMPSendJob(context, messageId, recipients.getPrimaryRecipient()
+      .getNumber()));
+    Log.d(TAG, "PushSMPSendJob added");
   }
 
   private static void sendMediaPush(Context context, Recipients recipients, long messageId) {
@@ -215,6 +282,23 @@ public class MessageSender {
       }
 
       if (keyExchange) {
+        return false;
+      }
+
+      Recipient recipient   = recipients.getPrimaryRecipient();
+      String    destination = Util.canonicalizeNumber(context, recipient.getNumber());
+
+      return isPushDestination(context, destination);
+    } catch (InvalidNumberException e) {
+      Log.w(TAG, e);
+      return false;
+    }
+  }
+
+  // TODO: adapt to SMP
+  private static boolean isPushSMPSend(Context context, Recipients recipients) {
+    try {
+      if (!TextSecurePreferences.isPushRegistered(context)) {
         return false;
       }
 

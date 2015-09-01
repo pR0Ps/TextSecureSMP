@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import org.thoughtcrime.SMP.crypto.MasterSecret;
-import org.thoughtcrime.SMP.database.RecipientPreferenceDatabase;
 import org.thoughtcrime.SMP.database.RecipientPreferenceDatabase.VibrateState;
 import org.thoughtcrime.SMP.recipients.Recipients;
 

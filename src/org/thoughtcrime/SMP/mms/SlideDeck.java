@@ -17,26 +17,16 @@
 package org.thoughtcrime.SMP.mms;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.util.Pair;
 
 import org.thoughtcrime.SMP.R;
 import org.thoughtcrime.SMP.crypto.MasterSecret;
-import org.thoughtcrime.SMP.dom.smil.parser.SmilXmlSerializer;
-import org.thoughtcrime.SMP.util.ListenableFutureTask;
 import org.thoughtcrime.SMP.util.MediaUtil;
-import org.thoughtcrime.SMP.util.SmilUtil;
 import org.thoughtcrime.SMP.util.Util;
 
-import java.io.ByteArrayOutputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
 import java.util.List;
 
-import ws.com.google.android.mms.ContentType;
-import ws.com.google.android.mms.pdu.CharacterSets;
 import ws.com.google.android.mms.pdu.PduBody;
-import ws.com.google.android.mms.pdu.PduPart;
 
 public class SlideDeck {
 

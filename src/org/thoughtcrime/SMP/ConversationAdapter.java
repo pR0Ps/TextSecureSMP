@@ -50,6 +50,8 @@ import java.util.Set;
  */
 public class ConversationAdapter extends CursorAdapter implements AbsListView.RecyclerListener {
 
+  private static final String TAG = ConversationAdapter.class.getSimpleName();
+
   private static final int MAX_CACHE_SIZE = 40;
   private final Map<String,SoftReference<MessageRecord>> messageRecordCache =
       Collections.synchronizedMap(new LRUCache<String, SoftReference<MessageRecord>>(MAX_CACHE_SIZE));
@@ -160,7 +162,20 @@ public class ConversationAdapter extends CursorAdapter implements AbsListView.Re
                                                   .readerFor(cursor, masterSecret);
 
     MessageRecord messageRecord = reader.getCurrent();
-
+/*
+    Log.d(TAG, "messageRecord.isSMPMessage(): " + messageRecord.isSMPMessage());
+    if (messageRecord.isSMPMessage()) {
+      MessageRecord newMessageRecord = new SmsMessageRecord(context, messageRecord.getId(), new
+        DisplayRecord.Body("SMP_" + messageRecord.getId(), true), messageRecord.getRecipients(),
+        messageRecord
+        .getIndividualRecipient(),
+        messageRecord.getRecipientDeviceId(), messageRecord.getDateSent(), messageRecord
+        .getDateReceived(), 0, messageRecord.getType(), messageRecord.getThreadId(), messageRecord
+        .getDeliveryStatus(), null);
+      Log.d(TAG, "messageRecord: " + newMessageRecord.getDisplayBody().toString());
+      return newMessageRecord;
+    }
+*/
     messageRecordCache.put(type + messageId, new SoftReference<MessageRecord>(messageRecord));
 
     return messageRecord;

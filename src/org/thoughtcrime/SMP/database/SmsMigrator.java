@@ -26,7 +26,6 @@ import android.util.Log;
 import org.thoughtcrime.SMP.crypto.MasterCipher;
 import org.thoughtcrime.SMP.crypto.MasterSecret;
 import org.thoughtcrime.SMP.recipients.RecipientFactory;
-import org.thoughtcrime.SMP.recipients.RecipientFormattingException;
 import org.thoughtcrime.SMP.recipients.Recipients;
 
 import java.util.StringTokenizer;

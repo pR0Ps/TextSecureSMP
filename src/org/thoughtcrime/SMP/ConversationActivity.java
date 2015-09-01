@@ -25,15 +25,15 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
-import android.support.v7.app.ActionBar.LayoutParams;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -62,6 +62,7 @@ import org.thoughtcrime.SMP.contacts.ContactAccessor;
 import org.thoughtcrime.SMP.contacts.ContactAccessor.ContactData;
 import org.thoughtcrime.SMP.crypto.MasterCipher;
 import org.thoughtcrime.SMP.crypto.MasterSecret;
+import org.thoughtcrime.SMP.crypto.SMP.SMPSyncContentObserver;
 import org.thoughtcrime.SMP.crypto.SecurityEvent;
 import org.thoughtcrime.SMP.database.DatabaseFactory;
 import org.thoughtcrime.SMP.database.DraftDatabase;
@@ -167,6 +168,10 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
   private DynamicTheme    dynamicTheme    = new DynamicTheme();
   private DynamicLanguage dynamicLanguage = new DynamicLanguage();
 
+  Handler handler;
+  String CONVERSATION_URI      = "content://textsecure/smpSync/thread/";
+  SMPSyncContentObserver smpSyncContentObserver;
+
   @Override
   protected void onPreCreate() {
     dynamicTheme.onCreate(this);
@@ -188,6 +193,14 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     initializeViews();
     initializeResources();
     initializeDraft();
+
+
+    // TODO: build content observer here to listen to incoming SMP messages
+    // TODO: ContentObserver
+    handler = new Handler(Looper.getMainLooper());
+    smpSyncContentObserver = new SMPSyncContentObserver(handler, this, recipients);
+    getContentResolver().registerContentObserver(Uri.parse
+      (CONVERSATION_URI + threadId /*+ "/smpSync"*/), true, smpSyncContentObserver);
   }
 
   @Override
@@ -233,6 +246,8 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
     super.onPause();
     MessageNotifier.setVisibleThread(-1L);
     if (isFinishing()) overridePendingTransition(R.anim.fade_scale_in, R.anim.slide_to_right);
+
+    getContentResolver().unregisterContentObserver(smpSyncContentObserver);
   }
 
   @Override
@@ -432,6 +447,10 @@ public class ConversationActivity extends PassphraseRequiredActionBarActivity
   private void handleVerifyIdentity() {
     Intent verifyIdentityIntent = new Intent(this, VerifyIdentityActivity.class);
     verifyIdentityIntent.putExtra("recipient", getRecipients().getPrimaryRecipient().getRecipientId());
+
+    // TODO: keep?!
+    verifyIdentityIntent.putExtra("initiator", true);
+
     startActivity(verifyIdentityIntent);
   }
 

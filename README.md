@@ -6,7 +6,7 @@ TextSecure uses your phone's data connection (WiFi/3G/4G) to communicate securel
 
 Currently available on the Play store.
 
-*[![Play Store Badge](https://developer.android.com/images/brand/en_app_rgb_wo_60.png)](https://play.google.com/store/apps/details?id=org.thoughtcrime.securesms)*
+*[![Play Store Badge](https://developer.android.com/images/brand/en_app_rgb_wo_60.png)](https://play.google.com/store/apps/details?id=org.thoughtcrime.securesms.SMP)*
 
 ## Contributing Bug reports
 We use GitHub for bug tracking. Please search the existing issues for your bug and create a new one if the issue is not yet tracked!
@@ -19,7 +19,7 @@ Want to live life on the bleeding edge and help out with testing?
 You can subscribe to TextSecure Beta releases in two steps:
  
 1. Join the [TextSecure Beta Google+ Community](https://plus.google.com/communities/114424213916773497091).
-1. After you've joined the community, [subscribe to the beta](https://play.google.com/apps/testing/org.thoughtcrime.securesms).
+1. After you've joined the community, [subscribe to the beta](https://play.google.com/apps/testing/org.thoughtcrime.securesms.SMP).
 
 If you're interested in a life of peace and tranquility, stick with the standard releases.
 

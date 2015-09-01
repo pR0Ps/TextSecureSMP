@@ -34,8 +34,6 @@ import org.whispersystems.jobqueue.requirements.NetworkRequirementProvider;
 import org.whispersystems.libaxolotl.logging.AxolotlLoggerProvider;
 import org.whispersystems.libaxolotl.util.AndroidAxolotlLogger;
 
-import java.security.Security;
-
 import dagger.ObjectGraph;
 
 /**

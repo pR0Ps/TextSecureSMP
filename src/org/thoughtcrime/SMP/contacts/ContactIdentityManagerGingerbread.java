@@ -1,17 +1,14 @@
 package org.thoughtcrime.SMP.contacts;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
-import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.PhoneLookup;
 import android.provider.ContactsContract.RawContacts;
 import android.telephony.TelephonyManager;
 
-import org.thoughtcrime.SMP.ApplicationPreferencesActivity;
 import org.thoughtcrime.SMP.util.TextSecurePreferences;
 
 import java.util.ArrayList;

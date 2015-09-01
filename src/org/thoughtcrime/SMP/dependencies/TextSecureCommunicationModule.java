@@ -4,6 +4,8 @@ import android.content.Context;
 
 import org.thoughtcrime.SMP.BuildConfig;
 import org.thoughtcrime.SMP.crypto.MasterSecret;
+import org.thoughtcrime.SMP.crypto.SMP.PushSMPSendJob;
+import org.thoughtcrime.SMP.crypto.SMP.TextSecureSMPMessageSender;
 import org.thoughtcrime.SMP.crypto.storage.TextSecureAxolotlStore;
 import org.thoughtcrime.SMP.jobs.AttachmentDownloadJob;
 import org.thoughtcrime.SMP.jobs.CleanPreKeysJob;
@@ -11,7 +13,6 @@ import org.thoughtcrime.SMP.jobs.CreateSignedPreKeyJob;
 import org.thoughtcrime.SMP.jobs.DeliveryReceiptJob;
 import org.thoughtcrime.SMP.jobs.PushGroupSendJob;
 import org.thoughtcrime.SMP.jobs.PushMediaSendJob;
-import org.thoughtcrime.SMP.jobs.PushContentReceiveJob;
 import org.thoughtcrime.SMP.jobs.PushNotificationReceiveJob;
 import org.thoughtcrime.SMP.jobs.PushTextSendJob;
 import org.thoughtcrime.SMP.jobs.RefreshPreKeysJob;
@@ -33,6 +34,7 @@ import dagger.Provides;
                                      DeliveryReceiptJob.class,
                                      PushGroupSendJob.class,
                                      PushTextSendJob.class,
+                                     PushSMPSendJob.class,
                                      PushMediaSendJob.class,
                                      AttachmentDownloadJob.class,
                                      RefreshPreKeysJob.class,
@@ -68,6 +70,21 @@ public class TextSecureCommunicationModule {
     };
   }
 
+  @Provides TextSecureSMPMessageSenderFactory provideTextSecureSMPMessageSenderFactory() {
+    return new TextSecureSMPMessageSenderFactory() {
+      @Override
+      public TextSecureSMPMessageSender create(MasterSecret masterSecret) {
+        return new TextSecureSMPMessageSender(BuildConfig.PUSH_URL,
+          new TextSecurePushTrustStore(context),
+          TextSecurePreferences.getLocalNumber(context),
+          TextSecurePreferences.getPushServerPassword(context),
+          new TextSecureAxolotlStore(context, masterSecret),
+          Optional.of((TextSecureSMPMessageSender.EventListener)
+            new SecurityEventListener(context)));
+      }
+    };
+  }
+
   @Provides TextSecureMessageReceiver provideTextSecureMessageReceiver() {
     return new TextSecureMessageReceiver(BuildConfig.PUSH_URL,
                                          new TextSecurePushTrustStore(context),
@@ -76,6 +93,10 @@ public class TextSecureCommunicationModule {
 
   public static interface TextSecureMessageSenderFactory {
     public TextSecureMessageSender create(MasterSecret masterSecret);
+  }
+
+  public static interface TextSecureSMPMessageSenderFactory{
+    public TextSecureSMPMessageSender create(MasterSecret masterSecret);
   }
 
   private static class DynamicCredentialsProvider implements CredentialsProvider {

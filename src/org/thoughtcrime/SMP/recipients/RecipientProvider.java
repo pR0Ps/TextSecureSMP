@@ -29,7 +29,6 @@ import org.thoughtcrime.SMP.contacts.ContactPhotoFactory;
 import org.thoughtcrime.SMP.database.CanonicalAddressDatabase;
 import org.thoughtcrime.SMP.database.DatabaseFactory;
 import org.thoughtcrime.SMP.database.GroupDatabase;
-import org.thoughtcrime.SMP.database.RecipientPreferenceDatabase;
 import org.thoughtcrime.SMP.database.RecipientPreferenceDatabase.RecipientsPreferences;
 import org.thoughtcrime.SMP.util.GroupUtil;
 import org.thoughtcrime.SMP.util.LRUCache;

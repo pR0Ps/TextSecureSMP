@@ -20,18 +20,10 @@ package ws.com.google.android.mms.pdu;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
-import org.thoughtcrime.SMP.crypto.MasterSecret;
 import org.thoughtcrime.SMP.database.PartDatabase;
-import org.thoughtcrime.SMP.mms.MediaConstraints;
-import org.thoughtcrime.SMP.util.BitmapDecodingException;
-import org.thoughtcrime.SMP.util.BitmapUtil;
-import org.thoughtcrime.SMP.util.Util;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
-import ws.com.google.android.mms.ContentType;
 
 /**
  * The pdu part.

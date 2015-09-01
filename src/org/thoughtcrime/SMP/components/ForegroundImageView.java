@@ -27,7 +27,6 @@ import android.os.Build.VERSION_CODES;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.Gravity;
-import android.view.View;
 
 import com.makeramen.RoundedImageView;
 

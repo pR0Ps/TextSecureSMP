@@ -8,11 +8,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import org.thoughtcrime.SMP.recipients.Recipient;
 import org.thoughtcrime.SMP.recipients.RecipientFactory;
-import org.thoughtcrime.SMP.recipients.RecipientFormattingException;
 import org.thoughtcrime.SMP.recipients.Recipients;
 import org.thoughtcrime.SMP.util.BitmapUtil;
 import org.thoughtcrime.SMP.util.GroupUtil;
